@@ -35,7 +35,7 @@
 
                         <div class="columns">
                           <div class="column has-text-centered">
-                            <a class="button is-danger is-rounded">
+                            <a class="button is-danger is-rounded" @click="removeTithe">
                                 <font-awesome-icon icon="trash">
                                 </font-awesome-icon>
                             </a>
@@ -59,6 +59,9 @@ export default {
       let theDate = new Date(aDate);
 
       return theDate.toLocaleDateString(aLocale, options);
+    },
+    removeTithe: function() {
+        this.$store.dispatch('deleteTithe', { id: parseInt(this.$route.params.id), router: this.$router })
     }
   },
   computed: {

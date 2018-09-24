@@ -10,6 +10,10 @@ export function fetchTithe (titheId) {
 	return axios.get(`${API_URL}/tithes/${titheId}`)
 }
 
+export function destroyTithe (titheId) {  
+	return axios.delete(`${API_URL}/tithes/${titheId}`)
+}
+
 export function updateTithe (titheId) {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
