@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="hero is-primary">
+        <section class="hero is-info">
             <div class="hero-body">
                 <div class="container has-text-centered">
                     <h1 class="title is-size-1">
@@ -61,7 +61,8 @@ export default {
       return theDate.toLocaleDateString(aLocale, options);
     },
     removeTithe: function() {
-        this.$store.dispatch('deleteTithe', { id: parseInt(this.$route.params.id), router: this.$router })
+        this.$store.dispatch('deleteTithe', { id: parseInt(this.$route.params.id) }).
+        	then(() => this.$router.push('/tithes'))
     }
   },
   computed: {

@@ -1,11 +1,23 @@
 <template>
     <div>
-        <section class="hero is-primary">
+        <section class="hero is-info">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-size-1">
-                        Diezmos del Mes
-                    </h1>
+                    <div class="colums">
+                        <div class="column">
+                            <h1 class="title is-size-1">
+                                Diezmos del Mes
+                            </h1>
+                        </div>
+                        <div class="column">
+                            <router-link :to="`new`">
+                                <a class="button is-light is-rounded">
+                                    <font-awesome-icon icon="plus">
+                                    </font-awesome-icon>
+                                </a>
+                            </router-link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

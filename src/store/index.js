@@ -24,10 +24,6 @@ const actions = {
   },
   deleteTithe(context, { id, router }) {
     return destroyTithe(id)
-      .then(function () {
-        router.replace('/tithes')
-        location.reload()
-      })
   }
 }
 
