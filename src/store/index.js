@@ -2,14 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // imports of AJAX functions go here
-import { fetchTithes, fetchTithe, destroyTithe } from '@/api'
+import { fetchTithes, fetchTithe, destroyTithe, fetchMembers, fetchMember } from '@/api'
 
 Vue.use(Vuex)
 
 const state = {  
   // single source of data
   tithes: [],
-  currentTithe: {}
+  currentTithe: {},
+  selectedMember: {}
 }
 
 const actions = {  
@@ -24,7 +25,15 @@ const actions = {
   },
   deleteTithe(context, { id, router }) {
     return destroyTithe(id)
-  }
+  },
+  loadMembers(context) {
+    return fetchMembers()
+      .then((response) => context.commit('setMembers', { members: response.data }))
+  },
+  loadMember(context, { id }) {
+    return fetchMember(id)
+      .then((response) => context.commit('setMember', { member: response.data }))
+  },
 }
 
 const mutations = {  
@@ -34,7 +43,13 @@ const mutations = {
   },
   setTithe(state, payload) {
     state.currentTithe = payload.tithe.data
-  }
+  },
+  setMembers(state, payload) {
+    state.members = payload.members.data
+  },
+  setMember(state, payload) {
+    state.selectedMember = payload.member.data
+  },
 }
 
 const getters = {  

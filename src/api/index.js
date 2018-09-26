@@ -21,3 +21,11 @@ export function updateTithe (titheId) {
 		}, 300)
 	})
 }
+
+export function fetchMembers() {  
+	return axios.get(`${API_URL}/users?filter[church_id_eq]=1`)
+}
+
+export function fetchMember (memberId) {
+	return axios.get(`${API_URL}/users/${memberId}`)
+}

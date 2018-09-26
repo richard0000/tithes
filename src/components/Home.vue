@@ -7,13 +7,6 @@
       </div>
     </div>
   </section>
-  <section class="section">
-    <div class="container">
-      <div class="box">
-        <router-link :to="`tithes`" class="card-footer-item">Ver Diezmos</router-link>
-      </div>
-    </div>
-  </section>
 </div>
 </template>
 
