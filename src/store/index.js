@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // imports of AJAX functions go here
-import { fetchTithes, fetchTithe, destroyTithe, fetchMembers, fetchMember } from '@/api'
+import { fetchTithes, fetchTithe, destroyTithe, fetchMembers, fetchMember, createTithe } from '@/api'
 
 Vue.use(Vuex)
 
@@ -34,6 +34,9 @@ const actions = {
     return fetchMember(id)
       .then((response) => context.commit('setMember', { member: response.data }))
   },
+  pushNewTithe(context, { user_id, amount, date, router}) {
+    return createTithe(user_id, amount, date)
+  }
 }
 
 const mutations = {  

@@ -2,12 +2,20 @@ import axios from 'axios'
 
 const API_URL = 'http://dev.sso.salomon/api'
 
-export function fetchTithes(year = 2018, month = 8) {  
+export function fetchTithes(year = 2018, month = 10) {  
 	return axios.get(`${API_URL}/tithes?filter[church_id_eq]=1&year=${year}&month=${month}`)
 }
 
 export function fetchTithe (titheId) {  
 	return axios.get(`${API_URL}/tithes/${titheId}`)
+}
+
+export function createTithe (user_id, amount, date) {  
+	return axios.post(`${API_URL}/tithes`, {
+		user_id: user_id,
+		amount: amount,
+		date: date
+	})
 }
 
 export function destroyTithe (titheId) {  
