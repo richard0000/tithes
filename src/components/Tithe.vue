@@ -22,7 +22,7 @@
                             </div>
                             <div class="media-content has-text-centered">
                                 <p class="title article-title">
-                                    {{ tithe.member.name }}
+                                    {{ (tithe.member) ? tithe.member.name : '' }}
                                 </p>
                                 <p class="subtitle is-6 article-subtitle">
                                     {{ localeDate(tithe.date, 'es-AR') }}
@@ -48,7 +48,6 @@
     </div>
 </template>
 <script>
-import { updateTithe } from '@/api'
 export default {
   beforeMount() {
     this.$store.dispatch('loadTithe', { id: parseInt(this.$route.params.id) })
