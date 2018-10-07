@@ -46,7 +46,7 @@
                          <div class="column">
                             <div class="select is-rounded is-size-4">
                                <select v-model="currentMemberId" @click="searchMember(currentMemberId)">
-                                  <option v-for="member in members" v-bind:value="member.id">{{ member.name }}</option>
+                                  <option v-for="member in members" v-bind:value="member.id">{{ member.name + ' ' + member.surname }}</option>
                                </select>
                             </div>
                          </div>
@@ -138,68 +138,75 @@
       </section>
 
       <section class="section" id="results" v-if="currentMemberId">
-        <div class="columns box has-background-info">
+        <div class="box has-background-info">
+          <div class="columns">
 
-          <div class="column">
-            <div class="card article" v-if="currentMemberId">
-               <div class="card-content">
-                  <div class="media">
-                     <div class="media-center">
-                        <figure class="avatar">
-                           <!-- <img v-bind:src="tithe.member.photo"> -->
-                           <img src="../assets/male.png">
-                        </figure>
-                     </div>
-                     <div class="media-content has-text-centered">
-                        <p class="title article-title">
-                           {{ selectedMember.name }}
-                        </p>
-                     </div>
-                  </div>
-               </div>
+            <div class="column">
+              <div class="card article" v-if="currentMemberId">
+                 <div class="card-content">
+                    <div class="media">
+                       <div class="media-center">
+                          <figure class="avatar">
+                             <!-- <img v-bind:src="tithe.member.photo"> -->
+                             <img src="../assets/male.png">
+                          </figure>
+                       </div>
+                       <div class="media-content has-text-centered">
+                          <p class="title article-title">
+                             {{ selectedMember.name }}
+                          </p>
+                          <p class="title article-title">
+                             {{ selectedMember.surname }}
+                          </p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
             </div>
+
+            <div class="column" v-if="selectedDate">
+              <div class="card article" v-if="currentMemberId">
+                 <div class="card-content">
+                    <div class="media">
+                       <div class="media-content has-text-centered">
+                          <p class="title article-title">
+                             {{ selectedDate }}
+                          </p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+            </div>
+
+            <div class="column" v-if="selectedAmount !== 0">
+              <div class="card article" v-if="currentMemberId">
+                 <div class="card-content">
+                    <div class="media">
+                       <div class="media-content has-text-centered">
+                          <p class="title article-title">
+                             {{ '$ ' + selectedAmount }}
+                          </p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+            </div>
+
           </div>
 
-          <div class="column" v-if="selectedDate">
-            <div class="card article" v-if="currentMemberId">
-               <div class="card-content">
-                  <div class="media">
-                     <div class="media-content has-text-centered">
-                        <p class="title article-title">
-                           {{ selectedDate }}
-                        </p>
-                     </div>
-                  </div>
-               </div>
+          <div class="columns" v-show="message !== ''">
+            <div class="column">
+              <b-notification has-icon>
+                <p class="is-size-4">{{ message }}</p>
+              </b-notification>
             </div>
           </div>
-
-          <div class="column" v-if="selectedAmount !== 0">
-            <div class="card article" v-if="currentMemberId">
-               <div class="card-content">
-                  <div class="media">
-                     <div class="media-content has-text-centered">
-                        <p class="title article-title">
-                           {{ '$ ' + selectedAmount }}
-                        </p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-          </div>
-
         </div>
-      </section>
-
-      <section class="section" v-show="message !== ''">
-        <b-notification class="is-warning" has-icon>
-          <p class="is-size-4">{{ message }}</p>
-        </b-notification>
       </section>
 
       <section class="section" v-show="step === 4" id="btnSubmitNewTithe">
         <div class="control has-text-centered">
-          <a :class="{'is-loading': complete}" class="button is-large is-primary" @click="submitTithe">Aceptar</a>
+          <a :class="{'is-loading': completed}" class="button is-large is-primary" @click="submitTithe">Aceptar</a>
         </div>
       </section>
    </div>
@@ -218,7 +225,7 @@ export default {
       selectedDate: null,
       selectedAmount: 0,
       message: '',
-      complete: false
+      completed: false
     }
   },
   beforeMount() {
@@ -232,7 +239,7 @@ export default {
   	},
     fromIsValid() {
       if(this.currentMemberId == 0) {
-        this.message = 'Por favor, seleccione un miemro'
+        this.message = 'Por favor, seleccione un miembro'
         return false
       }
       if((this.selectedDate == null)||(this.selectedDate == NaN)) {

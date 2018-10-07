@@ -66,6 +66,7 @@
                             <h2 class='is-large is-size-2'>Mas Datos Personales</h2>
                          </div>
                       </div>
+
                       <div class="columns">
                         <div class="column">
                           <p class="control is-expanded">
@@ -73,6 +74,7 @@
                           </p>
                          </div>
                       </div>
+
                       <div class="columns">
                          <div class="column">
                           <p class="control is-expanded">
@@ -80,6 +82,15 @@
                           </p>
                          </div>
                       </div>
+
+                      <div class="columns">
+                        <div class="column">
+                          <p class="control is-expanded">
+                            <input class="input is-size-4" type="email" placeholder="Email" v-model="member.email">
+                          </p>
+                         </div>
+                      </div>
+
                       <div class="columns">
                          <div class="column">
                             <datepicker :config="{ wrap: false }" placeholder="Fecha de nacimiento" v-model="member.birthday" class="has-text-centered is-size-4" readonly>
@@ -123,6 +134,59 @@
           </div>
        </div>
     </section>
+
+    <section class="section" id="results" v-if="member.name">
+      <div class="box has-background-info">
+        <div class="columns">
+
+          <div class="column">
+            <div class="card article" v-if="member.name">
+               <div class="card-content">
+                  <div class="media">
+                     <div class="media-center">
+                        <figure class="avatar">
+                           <!-- <img v-bind:src="tithe.member.photo"> -->
+                           <img src="../assets/male.png">
+                        </figure>
+                     </div>
+                     <div class="media-content has-text-centered">
+                        <p class="title article-title">
+                           <span v-if="member.surname">{{ member.surname + ', '}}</span>{{ member.name}}
+                        </p>
+                        <p class="subtitle" v-if="member.email">
+                          {{ 'Email: ' + member.email }}
+                        </p>
+                        <p class="subtitle" v-if="member.address">
+                          {{ 'Dirección: ' + member.address }}
+                        </p>
+                        <p v-if="member.phone1">
+                          {{ 'Telefono: ' + member.phone1 }}
+                        </p>
+                        <p v-if="member.birthday">
+                          {{ 'Fecha de Naicmiento: ' + member.birthday }}
+                        </p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns" v-show="message !== ''">
+          <div class="column">
+            <b-notification has-icon>
+              <p class="is-size-4">{{ message }}</p>
+            </b-notification>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" v-show="step === 4" id="btnSubmitNewMember">
+      <div class="control has-text-centered">
+        <a :class="{'is-loading': completed}" class="button is-large is-primary" @click="submitNewMember">Aceptar</a>
+      </div>
+    </section>
   </div>
 </template>
 <script>
@@ -136,9 +200,29 @@ export default {
   data() {
     return {
       step: 1,
-      member: {}
+      member: {},
+      message: '',
+      completed: false
     }
-  }
+  },
+  methods: {
+    fromIsValid() {/*
+      if(this.currentMemberId == 0) {
+        this.message = 'Por favor, seleccione un miemro'
+        return false
+      }*/
+
+      this.complete = true;
+      return this.complete
+    },
+    submitNewMember() {
+      alert(this.member)
+      if(this.fromIsValid()) {
+        this.$store.dispatch('pushNewMember', { member: this.member }).
+            then(() => this.$router.push('/new-tithe'))
+      }
+    }
+  },
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

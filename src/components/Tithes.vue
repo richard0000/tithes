@@ -21,6 +21,7 @@
                 </div>
             </div>
         </section>
+
         <section class="section">
             <div class="container">
                 <div class="card" v-bind:key="tithe.id" v-for="tithe in tithes">

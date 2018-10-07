@@ -37,3 +37,16 @@ export function fetchMembers() {
 export function fetchMember (memberId) {
 	return axios.get(`${API_URL}/users/${memberId}`)
 }
+
+export function createMember (member) {
+	if(member.email == null){
+		member.email = name + '@' + surname + '.com'
+	}
+	return axios.post(`${API_URL}/users`, {
+		name: member.name,
+		surname: member.surname,
+		email: member.email,
+		password: '12345678',
+		church_id: 1
+	})
+}
