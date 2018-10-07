@@ -10,6 +10,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCoffee, faEdit, faTrash, faPlus, faCalendar, faEraser, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VModal from 'vue-js-modal'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
+
+Vue.use(Buefy)
 
 library.add(faCoffee, faEdit, faTrash, faPlus, faCalendar, faEraser, faArrowDown)
 

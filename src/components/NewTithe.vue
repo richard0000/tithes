@@ -23,7 +23,7 @@
                      <a>Monto</a>
                   </li>
                   <li :class="{'is-active': step == 'review'}" @click="step = 'review'">
-                     <a>Review</a>
+                     <a>Revisar y Confirmar</a>
                   </li>
                </ul>
             </div>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="columns">
                            <div class="column">
-                              <div class="select is-rounded">
+                              <div class="select is-rounded is-size-4">
                                  <select v-model="currentMemberId" @click="searchMember(currentMemberId)">
                                     <option v-for="member in members" v-bind:value="member.id">{{ member.name }}</option>
                                  </select>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="columns">
                           <div class="column">
-                            <datepicker :config="{ wrap: false }" v-model="selectedDate" class="has-text-centered" readonly>
+                            <datepicker :config="{ wrap: false }" v-model="selectedDate" class="has-text-centered is-size-4" readonly>
                             </datepicker>
                           </div>
                         </div>
@@ -76,14 +76,14 @@
                             <div class="input-group">
                               <div class="field has-addons">
                                 <p class="control">
-                                  <span class="select">
+                                  <span class="select is-size-4">
                                     <select>
                                       <option>$</option>
                                     </select>
                                   </span>
                                 </p>
                                 <p class="control is-expanded">
-                                  <input class="input" type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount">
+                                  <input class="input is-size-4" type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount">
                                 </p>
                               </div>
                             </div>
@@ -110,7 +110,7 @@
          </div>
       </section>
 
-      <section class="section" id="results" v-if="selectedMember.name">
+      <section class="section" id="results" v-if="currentMemberId">
         <div class="columns box has-background-info">
 
           <div class="column">
@@ -164,6 +164,12 @@
         </div>
       </section>
 
+      <section class="section">
+        <b-notification class="is-warning" has-icon v-show="message !== ''">
+          <p class="is-size-4">{{ message }}</p>
+        </b-notification>
+      </section>
+
       <section class="section" v-show="step === 'review'" id="btnSubmitNewTithe">
         <div class="control has-text-centered">
           <a class="button is-large is-primary" @click="submitTithe">Aceptar</a>
@@ -183,7 +189,8 @@ export default {
       step: 'member',
       currentMemberId: 0,
       selectedDate: null,
-      selectedAmount: 0
+      selectedAmount: 0,
+      message: '',
     }
   },
   beforeMount() {
@@ -191,21 +198,31 @@ export default {
   },
   methods: {
   	searchMember(memberId) {
-  		this.$store.dispatch('loadMember', { id: memberId })
+      if(memberId !== 0){
+    		this.$store.dispatch('loadMember', { id: memberId })
+      }
   	},
-    validateBeforeSubmit() {
+    fromIsValid() {
       if(this.currentMemberId == 0) {
+        this.message = 'Por favor, seleccione un miemro'
         return false
       }
-      if(this.selectedDate == null) {
+      if((this.selectedDate == null)||(this.selectedDate == NaN)) {
+        this.message = 'Por favor, seleccione una fecha válida'
+        return false
+      }
+      if(new Date(this.selectedDate) > new Date()){
+        this.message = 'La fecha no puede ser mayor a hoy!'
         return false
       }
       if(this.selectedAmount == 0) {
+        this.message = 'Por favor, ingrese un monto mayor a cero'
         return false
       }
+      return true
     },
     submitTithe() {
-      if(this.validateBeforeSubmit()) {
+      if(this.fromIsValid()) {
         this.$store.dispatch('pushNewTithe', { 
           user_id: parseInt(this.currentMemberId),
           amount: parseFloat(this.selectedAmount),
