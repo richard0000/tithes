@@ -13,114 +13,126 @@
          <div class="container">
             <div class="tabs is-centered is-fullwidth is-large">
                <ul>
-                  <li :class="{'is-active': step == 'member'}" @click="step = 'member'">
+                  <li :class="{'is-active': step == 1}" @click="step = 1">
                      <a>Miembro</a>
                   </li>
-                  <li :class="{'is-active': step == 'date'}" @click="step = 'date'">
+                  <li :class="{'is-active': step == 2}" @click="step = 2">
                      <a>Fecha</a>
                   </li>
-                  <li :class="{'is-active': step == 'amount'}" @click="step = 'amount'">
+                  <li :class="{'is-active': step == 3}" @click="step = 3">
                      <a>Monto</a>
                   </li>
-                  <li :class="{'is-active': step == 'review'}" @click="step = 'review'">
+                  <li :class="{'is-active': step == 4}" @click="step = 4">
                      <a>Revisar y Confirmar</a>
                   </li>
                </ul>
             </div>
             <div class="columns">
-               <div class="column is-half is-offset-one-quarter has-text-centered">
-                  <div class="member" v-show="step === 'member'">
-                     <div class="box">
-                        <div class="columns">
-                           <div class="column">
-                              <h2 class='is-large is-size-2'>Agregar Miembro</h2>
-                           </div>
-                        </div>
-                        <div class="columns">
-                           <div class="column">
-                              <div class="select is-rounded is-size-4">
-                                 <select v-model="currentMemberId" @click="searchMember(currentMemberId)">
-                                    <option v-for="member in members" v-bind:value="member.id">{{ member.name }}</option>
-                                 </select>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="columns">
-                          <div class="column">
-                            <p>Si la persona no está en la lista, puede agregarla aqu&iacute;</p>
-                          </div>
-                        </div>
-                        <div class="columns">
-                          <div class="column">
-                            <router-link :to="`/new-member`">
-                                <a class="button is-success is-rounded">
-                                    <font-awesome-icon icon="plus">
-                                    </font-awesome-icon>
-                                </a>
-                            </router-link>
-                          </div>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class="date" v-show="step === 'date'">
-                     <div class="box">
-                        <div class="columns">
-                           <div class="column">
-                              <h2 class='is-large is-size-2'>Agregar Fecha</h2>
-                           </div>
-                        </div>
-                        <div class="columns">
-                          <div class="column">
-                            <datepicker :config="{ wrap: false }" v-model="selectedDate" class="has-text-centered is-size-4" readonly>
-                            </datepicker>
-                          </div>
+              <div class="column is-one-fifth">
+                  <a class="button is-large is-rounded" @click="step--; if(step < 1){ step = 1}">
+                      <font-awesome-icon icon="arrow-left">
+                      </font-awesome-icon>
+                  </a>
+              </div>
+              <div class="column has-text-centered">
+                <div class="member" v-show="step === 1">
+                   <div class="box">
+                      <div class="columns">
+                         <div class="column">
+                            <h2 class='is-large is-size-2'>Agregar Miembro</h2>
+                         </div>
+                      </div>
+                      <div class="columns">
+                         <div class="column">
+                            <div class="select is-rounded is-size-4">
+                               <select v-model="currentMemberId" @click="searchMember(currentMemberId)">
+                                  <option v-for="member in members" v-bind:value="member.id">{{ member.name }}</option>
+                               </select>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="columns">
+                        <div class="column">
+                          <p>Si la persona no está en la lista, puede agregarla aqu&iacute;</p>
                         </div>
                       </div>
-                  </div>
-
-                  <div class="amount" v-show="step === 'amount'">
-                     <div class="box">
-                        <div class="columns">
-                           <div class="column">
-                              <h2 class='is-large is-size-2'>Agregar Monto</h2>
-                           </div>
+                      <div class="columns">
+                        <div class="column">
+                          <router-link :to="`/new-member`">
+                              <a class="button is-success is-rounded">
+                                  <font-awesome-icon icon="plus">
+                                  </font-awesome-icon>
+                              </a>
+                          </router-link>
                         </div>
-                        <div class="columns">
-                          <div class="column">
-                            <div class="input-group">
-                              <div class="field has-addons">
-                                <p class="control">
-                                  <span class="select is-size-4">
-                                    <select>
-                                      <option>$</option>
-                                    </select>
-                                  </span>
-                                </p>
-                                <p class="control is-expanded">
-                                  <input class="input is-size-4" type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount">
-                                </p>
-                              </div>
+                      </div>
+                   </div>
+                </div>
+
+                <div class="date" v-show="step === 2">
+                   <div class="box">
+                      <div class="columns">
+                         <div class="column">
+                            <h2 class='is-large is-size-2'>Agregar Fecha</h2>
+                         </div>
+                      </div>
+                      <div class="columns">
+                        <div class="column">
+                          <datepicker :config="{ wrap: false }" v-model="selectedDate" class="has-text-centered is-size-4" readonly>
+                          </datepicker>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="amount" v-show="step === 3">
+                   <div class="box">
+                      <div class="columns">
+                         <div class="column">
+                            <h2 class='is-large is-size-2'>Agregar Monto</h2>
+                         </div>
+                      </div>
+                      <div class="columns">
+                        <div class="column">
+                          <div class="input-group">
+                            <div class="field has-addons">
+                              <p class="control">
+                                <span class="select is-size-4">
+                                  <select>
+                                    <option>$</option>
+                                  </select>
+                                </span>
+                              </p>
+                              <p class="control is-expanded">
+                                <input class="input is-size-4" type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount" v-on:keyup.enter="step++">
+                              </p>
                             </div>
                           </div>
                         </div>
                       </div>
-                  </div>
+                    </div>
+                </div>
 
-                  <div class="review" v-show="step === 'review'">
-                     <div class="box">
-                        <div class="columns">
-                           <div class="column">
-                              <h2 class='is-large is-size-2'>Revisar y Confirmar</h2>
-                           </div>
-                        </div>
+                <div class="review" v-show="step === 4">
+                   <div class="box">
+                      <div class="columns">
+                         <div class="column">
+                            <h2 class='is-large is-size-2'>Revisar y Confirmar</h2>
+                         </div>
                       </div>
-                      <a class="button is-primary is-rounded" href="#btnSubmitNewTithe">
-                       <font-awesome-icon icon="arrow-down">
-                       </font-awesome-icon>
-                      </a>
-                  </div>
-               </div>
+                    </div>
+                    <a class="button is-primary is-rounded" href="#btnSubmitNewTithe">
+                     <font-awesome-icon icon="arrow-down">
+                     </font-awesome-icon>
+                    </a>
+                </div>
+              </div>
+              <div class="column is-one-fifth has-text-right">
+                  <a class="button is-large is-rounded" @click="step++; if(step > 4){ step = 4}">
+                      <font-awesome-icon icon="arrow-right">
+                      </font-awesome-icon>
+                  </a>
+              </div>
             </div>
          </div>
       </section>
@@ -179,13 +191,13 @@
         </div>
       </section>
 
-      <section class="section">
-        <b-notification class="is-warning" has-icon v-show="message !== ''">
+      <section class="section" v-show="message !== ''">
+        <b-notification class="is-warning" has-icon>
           <p class="is-size-4">{{ message }}</p>
         </b-notification>
       </section>
 
-      <section class="section" v-show="step === 'review'" id="btnSubmitNewTithe">
+      <section class="section" v-show="step === 4" id="btnSubmitNewTithe">
         <div class="control has-text-centered">
           <a :class="{'is-loading': complete}" class="button is-large is-primary" @click="submitTithe">Aceptar</a>
         </div>
@@ -201,7 +213,7 @@ export default {
   },
   data() {
     return {
-      step: 'member',
+      step: 1,
       currentMemberId: 0,
       selectedDate: null,
       selectedAmount: 0,
