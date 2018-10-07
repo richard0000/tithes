@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Tithes from '@/components/Tithes'
 import Tithe from '@/components/Tithe'
 import NewTithe from '@/components/NewTithe'
+import NewMember from '@/components/NewMember'
 
 Vue.use(Router)
 
@@ -25,9 +26,14 @@ export default new Router({
       component: Tithe
     },
     {
-      path: '/new',
+      path: '/new-tithe',
       name: 'NewTithe',
       component: NewTithe
+    },
+    {
+      path: '/new-member',
+      name: 'NewMember',
+      component: NewMember
     }
   ]
 })

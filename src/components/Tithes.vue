@@ -10,7 +10,7 @@
                             </h1>
                         </div>
                         <div class="column">
-                            <router-link :to="`new`">
+                            <router-link :to="`new-tithe`">
                                 <a class="button is-light is-rounded">
                                     <font-awesome-icon icon="plus">
                                     </font-awesome-icon>

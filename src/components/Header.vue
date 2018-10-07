@@ -5,10 +5,10 @@
       <router-link to="/" class="navbar-item">
         Inicio
       </router-link>
-      <router-link :to="`tithes`" class="navbar-item">
+      <router-link :to="`/tithes`" class="navbar-item">
         Diezmos del mes
       </router-link>
-      <router-link :to="`new`" class="navbar-item">
+      <router-link :to="`/new-tithe`" class="navbar-item">
         Nuevo Diezmo
       </router-link>
     </div>

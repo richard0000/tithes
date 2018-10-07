@@ -4,7 +4,7 @@
          <div class="hero-body">
             <div class="container has-text-centered">
                <h1 class="title is-size-1">
-                  Nuevo de Diezmo
+                  Nuevo Diezmo
                </h1>
             </div>
          </div>
@@ -44,6 +44,21 @@
                                  </select>
                               </div>
                            </div>
+                        </div>
+                        <div class="columns">
+                          <div class="column">
+                            <p>Si la persona no está en la lista, puede agregarla aqu&iacute;</p>
+                          </div>
+                        </div>
+                        <div class="columns">
+                          <div class="column">
+                            <router-link :to="`/new-member`">
+                                <a class="button is-success is-rounded">
+                                    <font-awesome-icon icon="plus">
+                                    </font-awesome-icon>
+                                </a>
+                            </router-link>
+                          </div>
                         </div>
                      </div>
                   </div>
@@ -172,7 +187,7 @@
 
       <section class="section" v-show="step === 'review'" id="btnSubmitNewTithe">
         <div class="control has-text-centered">
-          <a class="button is-large is-primary" @click="submitTithe">Aceptar</a>
+          <a :class="{'is-loading': complete}" class="button is-large is-primary" @click="submitTithe">Aceptar</a>
         </div>
       </section>
    </div>
@@ -191,6 +206,7 @@ export default {
       selectedDate: null,
       selectedAmount: 0,
       message: '',
+      complete: false
     }
   },
   beforeMount() {
@@ -219,7 +235,9 @@ export default {
         this.message = 'Por favor, ingrese un monto mayor a cero'
         return false
       }
-      return true
+
+      this.complete = true;
+      return this.complete
     },
     submitTithe() {
       if(this.fromIsValid()) {
