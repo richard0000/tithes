@@ -283,7 +283,9 @@ export default {
           amount: parseFloat(this.selectedAmount),
           date: this.selectedDate,
         }).
-            then(() => this.$router.push('/tithes'))
+          then(() => this.$store.dispatch('quitSelectedMember').
+            then(() => this.$router.push('/tithes')))
+          .catch((response) => this.message = response)
       }
     }
   },

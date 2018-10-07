@@ -235,13 +235,24 @@ export default {
         return false
       }
 
-      this.complete = true;
-      return this.complete
+      this.completed = true;
+      return this.completed
+    },
+    setMessage(message, completed) {
+      let theMessage = message
+      if(message.email){
+        theMessage = 'Es probable que el usuario ya exista en la base de datos. Intente cambiando los datos, o bien verifique que el usuario exista.'
+      }
+      this.message = theMessage
+      this.member.email = ''
+      this.step = 1
+      this.completed = completed
     },
     submitNewMember() {
       if(this.fromIsValid()) {
         this.$store.dispatch('pushNewMember', { member: this.member }).
             then(() => this.$router.push('/new-tithe'))
+            .catch((response) => this.setMessage(response.response.data, false))
       }
     }
   },

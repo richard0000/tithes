@@ -39,7 +39,7 @@ export function fetchMember (memberId) {
 }
 
 export function createMember (member) {
-	if(member.email == null){
+	if((member.email == null)||(member.email == '')){
 		member.email = member.name + '@' + member.surname + '.com'
 	}
 	return axios.post(`${API_URL}/users`, {

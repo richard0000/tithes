@@ -40,6 +40,9 @@ const actions = {
   pushNewMember(context, { member }) {
     return createMember(member)
       .then((response) => context.commit('setMember', { member: response.data }))
+  },
+  quitSelectedMember(context) {
+    return context.commit('unsetSelectedMember')
   }
 }
 
@@ -56,6 +59,9 @@ const mutations = {
   },
   setMember(state, payload) {
     state.selectedMember = payload.member.data
+  },
+  unsetSelectedMember() {
+    state.selectedMember = {}
   }
 }
 
