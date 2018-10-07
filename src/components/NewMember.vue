@@ -135,8 +135,18 @@
        </div>
     </section>
 
-    <section class="section" id="results" v-if="member.name">
+    <section class="section" id="results" v-if="((member.name)||(message !== ''))">
       <div class="box has-background-info">
+        <div class="columns">
+          <div class="column">
+            <div class="media-content has-text-centered">
+              <p class="subtitle article-title has-text-white">
+                 Datos informados hasta el momento
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div class="columns">
 
           <div class="column">
@@ -206,17 +216,29 @@ export default {
     }
   },
   methods: {
-    fromIsValid() {/*
-      if(this.currentMemberId == 0) {
-        this.message = 'Por favor, seleccione un miemro'
+    fromIsValid() {
+      if(this.member.name == null) {
+        this.message = 'Por favor, agregue un nombre para el nuevo miembro'
+        this.step = 1
         return false
-      }*/
+      }
+
+      if(this.member.surname == null) {
+        this.message = 'Por favor, agregue un apellido para el nuevo miembro'
+        this.step = 1
+        return false
+      }
+
+      if((this.member.birthday !== null)&&(new Date(this.member.birthday) > new Date())) {
+        this.message = 'Por favor, agregue una fecha de nacimiento válida para el nuevo miembro'
+        this.step = 2
+        return false
+      }
 
       this.complete = true;
       return this.complete
     },
     submitNewMember() {
-      alert(this.member)
       if(this.fromIsValid()) {
         this.$store.dispatch('pushNewMember', { member: this.member }).
             then(() => this.$router.push('/new-tithe'))

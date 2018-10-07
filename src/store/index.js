@@ -10,7 +10,7 @@ const state = {
   // single source of data
   tithes: [],
   currentTithe: {},
-  selectedMember: {},
+  selectedMember: {}
 }
 
 const actions = {  

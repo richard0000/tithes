@@ -4,7 +4,7 @@
     <div class="hero-body">
       <div class="container has-text-centered">
   		<p id="slm-logo">Solomon</p>
-        <h1 class="subtitle is-size-3">Sistema para Iglesias</h1>
+        <h1 class="subtitle is-size-3">Sistema de gesti&oacute;n para Iglesias</h1>
       </div>
     </div>
   </section>

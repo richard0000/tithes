@@ -45,7 +45,7 @@
                       <div class="columns">
                          <div class="column">
                             <div class="select is-rounded is-size-4">
-                               <select v-model="currentMemberId" @click="searchMember(currentMemberId)">
+                               <select v-model="selectedMember.id" @click="searchMember(selectedMember.id)">
                                   <option v-for="member in members" v-bind:value="member.id">{{ member.name + ' ' + member.surname }}</option>
                                </select>
                             </div>
@@ -137,12 +137,22 @@
          </div>
       </section>
 
-      <section class="section" id="results" v-if="currentMemberId">
+      <section class="section" id="results" v-if="((selectedMember.id)||(message !== ''))">
         <div class="box has-background-info">
+          <div class="columns">
+            <div class="column">
+              <div class="media-content has-text-centered">
+                <p class="subtitle article-title has-text-white">
+                   Datos informados hasta el momento
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div class="columns">
 
             <div class="column">
-              <div class="card article" v-if="currentMemberId">
+              <div class="card article" v-if="selectedMember.id">
                  <div class="card-content">
                     <div class="media">
                        <div class="media-center">
@@ -165,7 +175,7 @@
             </div>
 
             <div class="column" v-if="selectedDate">
-              <div class="card article" v-if="currentMemberId">
+              <div class="card article" v-if="selectedMember.id">
                  <div class="card-content">
                     <div class="media">
                        <div class="media-content has-text-centered">
@@ -179,7 +189,7 @@
             </div>
 
             <div class="column" v-if="selectedAmount !== 0">
-              <div class="card article" v-if="currentMemberId">
+              <div class="card article" v-if="selectedMember.id">
                  <div class="card-content">
                     <div class="media">
                        <div class="media-content has-text-centered">
@@ -221,7 +231,6 @@ export default {
   data() {
     return {
       step: 1,
-      currentMemberId: 0,
       selectedDate: null,
       selectedAmount: 0,
       message: '',
@@ -231,6 +240,11 @@ export default {
   beforeMount() {
     this.$store.dispatch('loadMembers')
   },
+  mounted() {
+    if(this.selectedMember.name) {
+      this.step = 2
+    }
+  },
   methods: {
   	searchMember(memberId) {
       if(memberId !== 0){
@@ -238,20 +252,24 @@ export default {
       }
   	},
     fromIsValid() {
-      if(this.currentMemberId == 0) {
+      if(this.selectedMember.id == 0) {
         this.message = 'Por favor, seleccione un miembro'
+        this.step = 1
         return false
       }
       if((this.selectedDate == null)||(this.selectedDate == NaN)) {
         this.message = 'Por favor, seleccione una fecha válida'
+        this.step = 2
         return false
       }
       if(new Date(this.selectedDate) > new Date()){
         this.message = 'La fecha no puede ser mayor a hoy!'
+        this.step = 2
         return false
       }
       if(this.selectedAmount == 0) {
         this.message = 'Por favor, ingrese un monto mayor a cero'
+        this.step = 3
         return false
       }
 
@@ -261,7 +279,7 @@ export default {
     submitTithe() {
       if(this.fromIsValid()) {
         this.$store.dispatch('pushNewTithe', { 
-          user_id: parseInt(this.currentMemberId),
+          user_id: parseInt(this.selectedMember.id),
           amount: parseFloat(this.selectedAmount),
           date: this.selectedDate,
         }).
