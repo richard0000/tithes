@@ -78,7 +78,7 @@
                       </div>
                       <div class="columns">
                         <div class="column">
-                          <datepicker :config="{ wrap: false }" v-model="selectedDate" class="has-text-centered is-size-4" readonly>
+                          <datepicker :config="{ wrap: false }" v-model="selectedDate" class="has-text-centered is-size-4 is-rounded" readonly>
                           </datepicker>
                         </div>
                       </div>
@@ -97,14 +97,14 @@
                           <div class="input-group">
                             <div class="field has-addons">
                               <p class="control">
-                                <span class="select is-size-4">
+                                <span class="select is-size-4 is-rounded">
                                   <select>
                                     <option>$</option>
                                   </select>
                                 </span>
                               </p>
                               <p class="control is-expanded">
-                                <input class="input is-size-4" type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount" v-on:keyup.enter="step++">
+                                <input class="input is-size-4 is-rounded" type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount" v-on:keyup.enter="step++">
                               </p>
                             </div>
                           </div>
@@ -188,7 +188,7 @@
               </div>
             </div>
 
-            <div class="column" v-if="selectedAmount !== 0">
+            <div class="column" v-if="((selectedAmount !== 0)&&(selectedAmount !== null))">
               <div class="card article" v-if="selectedMember.id">
                  <div class="card-content">
                     <div class="media">
@@ -232,7 +232,7 @@ export default {
     return {
       step: 1,
       selectedDate: null,
-      selectedAmount: 0,
+      selectedAmount: null,
       message: '',
       completed: false
     }
@@ -267,7 +267,7 @@ export default {
         this.step = 2
         return false
       }
-      if(this.selectedAmount == 0) {
+      if((this.selectedAmount == 0)||(this.selectedAmount == null)){
         this.message = 'Por favor, ingrese un monto mayor a cero'
         this.step = 3
         return false
