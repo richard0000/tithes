@@ -20,7 +20,7 @@
                 <div class="colums">
                     <div class="column">
                         <h1 class="title is-size-1" v-if="selectedDate.month.id">
-                                Diezmos de {{ months[selectedDate.month.id].name }} - <span v-if="selectedDate.year.id"> {{ selectedDate.year.id }} </span>
+                                Diezmos de {{ months[(parseInt(selectedDate.month.id) - 1).toString()].name }} - <span v-if="selectedDate.year.id"> {{ selectedDate.year.id }} </span>
                             </h1>
                     </div>
                 </div>
@@ -30,23 +30,21 @@
     <section class="hero is-light">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <div class="colums">
-                    <div class="column is-one-quarter">
-                        <h1 class="title is-size-4">
-                                Filtros
-                            </h1>
+                <div class="columns">
+                    <div class="column is-offset-one-fifth is-one-fifth has-text-centered">
+                        <h1 class="title is-size-4">Filtros</h1>
                     </div>
-                    <div class="column">
-                        <div class="select is-rounded is-size-4" v-if="selectedDate.year.id !== null">
-                            <select v-model="selectedDate.year.id">
-                                <option v-for="year in years" v-bind:value="year.id">{{ year.name }}</option>
+                    <div class="column is-one-fifth has-text-centered">
+                        <div class="select is-rounded is-size-6" v-if="selectedDate.month.id !== null">
+                            <select v-model="selectedDate.month.id" @click="reloadTithes()">
+                                <option v-for="month in months" v-bind:value="month.id">{{ month.name }}</option>
                             </select>
                         </div>
                     </div>
-                    <div class="column">
-                        <div class="select is-rounded is-size-4" v-if="selectedDate.month.id !== null">
-                            <select v-model="selectedDate.month.id">
-                                <option v-for="month in months" v-bind:value="month.id">{{ month.name }}</option>
+                    <div class="column is-one-fifth has-text-centered">
+                        <div class="select is-rounded is-size-6" v-if="selectedDate.year.id !== null">
+                            <select v-model="selectedDate.year.id" @click="reloadTithes()">
+                                <option v-for="year in years" v-bind:value="year.id">{{ year.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -103,47 +101,50 @@ import {
 from 'vuex'
 export default {
     data() {
-        return {
-            selectedDate: {
-                year: {
-                    id: null,
-                    name: null
-                },
-                month: {
-                    id: null,
-                    name: null
+            return {
+                selectedDate: {
+                    year: {
+                        id: null,
+                        name: null
+                    },
+                    month: {
+                        id: null,
+                        name: null
+                    }
                 }
             }
-        }
-    },
-    computed: mapState({
-        tithes: state => state.tithes,
-        years: state => state.availableDates.years,
-        months: state => state.availableDates.months
-    }),
-    beforeMount() {
-        this.$store.dispatch('loadAvailableDates').then(() => {
-                this.$store.dispatch('loadTithes')
-            })
-            .then(() => this.setDates())
-    },
-    methods: {
-        localeDate: function(aDate, aLocale) {
-            let options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
-            let theDate = new Date(aDate);
-
-            return theDate.toLocaleDateString(aLocale, options);
         },
-        setDates() {
-            this.selectedDate.year.id = "2018"
-            this.selectedDate.month.id = "10"
+        computed: mapState({
+            tithes: state => state.tithes,
+            years: state => state.availableDates.years,
+            months: state => state.availableDates.months
+        }),
+        beforeMount() {
+            this.$store.dispatch('loadAvailableDates').then(() => {
+                    this.setDates()
+                })
+                .then(() => this.reloadTithes())
+        },
+        methods: {
+            localeDate: function(aDate, aLocale) {
+                let options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                };
+                let theDate = new Date(aDate);
+
+                return theDate.toLocaleDateString(aLocale, options);
+            },
+            setDates() {
+                this.selectedDate.year.id = (new Date()).getFullYear().toString()
+                this.selectedDate.month.id = ((new Date()).getMonth() + 1).toString()
+            },
+            reloadTithes() {
+              this.$store.dispatch('loadTithes', { date: this.selectedDate })
+            }
         }
-    }
 }
 
 </script>
