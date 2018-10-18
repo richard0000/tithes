@@ -7,11 +7,15 @@ import store from './store'
 
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faEdit, faTrash, faPlus, faMinus, faCalendar, faEraser, faArrowDown, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VModal from 'vue-js-modal'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
 
-library.add(faCoffee, faEdit, faTrash)
+Vue.use(Buefy)
+
+library.add(faCoffee, faEdit, faTrash, faPlus, faMinus, faCalendar, faEraser, faArrowDown, faArrowLeft, faArrowRight)
 
 Vue.use(VModal)
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="hero is-primary">
+        <section class="hero is-info">
             <div class="hero-body">
                 <div class="container has-text-centered">
                     <h1 class="title is-size-1">
@@ -22,7 +22,7 @@
                             </div>
                             <div class="media-content has-text-centered">
                                 <p class="title article-title">
-                                    {{ tithe.member.name }}
+                                    {{ (tithe.member) ? tithe.member.name : '' }}
                                 </p>
                                 <p class="subtitle is-6 article-subtitle">
                                     {{ localeDate(tithe.date, 'es-AR') }}
@@ -35,7 +35,7 @@
 
                         <div class="columns">
                           <div class="column has-text-centered">
-                            <a class="button is-danger is-rounded">
+                            <a class="button is-danger is-rounded" @click="removeTithe">
                                 <font-awesome-icon icon="trash">
                                 </font-awesome-icon>
                             </a>
@@ -48,7 +48,6 @@
     </div>
 </template>
 <script>
-import { updateTithe } from '@/api'
 export default {
   beforeMount() {
     this.$store.dispatch('loadTithe', { id: parseInt(this.$route.params.id) })
@@ -59,6 +58,10 @@ export default {
       let theDate = new Date(aDate);
 
       return theDate.toLocaleDateString(aLocale, options);
+    },
+    removeTithe: function() {
+        this.$store.dispatch('deleteTithe', { id: parseInt(this.$route.params.id) }).
+        	then(() => this.$router.push('/tithes'))
     }
   },
   computed: {
