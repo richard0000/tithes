@@ -1,20 +1,25 @@
-import Vue from 'vue'  
+import Vue from 'vue'
 import Vuex from 'vuex'
 
 // imports of AJAX functions go here
-import { fetchTithes, fetchTithe, destroyTithe, fetchMembers, fetchMember, createTithe, createMember } from '@/api'
+import { fetchTithes, fetchTithe, destroyTithe, fetchMembers, fetchMember, createTithe, createMember, fetchAvailableDates } from '@/api'
 
 Vue.use(Vuex)
 
-const state = {  
+const state = {
   // single source of data
   tithes: [],
   currentTithe: {},
-  selectedMember: {}
+  selectedMember: {},
+  availableDates: {}
 }
 
-const actions = {  
+const actions = {
   // asynchronous operations
+  loadAvailableDates(context) {
+    return fetchAvailableDates()
+      .then((response) => context.commit('setAvailableDates', { dates: response.data }))
+  },
   loadTithes(context) {
     return fetchTithes()
       .then((response) => context.commit('setTithes', { tithes: response.data }))
@@ -34,6 +39,9 @@ const actions = {
     return fetchMember(id)
       .then((response) => context.commit('setMember', { member: response.data }))
   },
+  prepareSelectedYear(context, { year }) {
+    return context.commit('setSelectedYear', { year: year })
+  },
   pushNewTithe(context, { user_id, amount, date, router}) {
     return createTithe(user_id, amount, date)
   },
@@ -46,8 +54,12 @@ const actions = {
   }
 }
 
-const mutations = {  
+const mutations = {
   // isolated data mutations
+  setAvailableDates(state, payload) {
+    state.availableDates.months = payload.dates.data.months
+    state.availableDates.years = payload.dates.data.years
+  },
   setTithes(state, payload) {
     state.tithes = payload.tithes.data
   },
@@ -62,18 +74,18 @@ const mutations = {
   },
   unsetSelectedMember() {
     state.selectedMember = {}
-  }
+  },
 }
 
-const getters = {  
+const getters = {
   // reusable data accessors
 }
 
-const store = new Vuex.Store({  
+const store = new Vuex.Store({
   state,
   actions,
   mutations,
   getters
 })
 
-export default store  
+export default store
