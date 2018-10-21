@@ -20,8 +20,8 @@ const actions = {
     return fetchAvailableDates()
       .then((response) => context.commit('setAvailableDates', { dates: response.data }))
   },
-  loadTithes(context) {
-    return fetchTithes()
+  loadTithes(context, {date}) {
+    return fetchTithes(date)
       .then((response) => context.commit('setTithes', { tithes: response.data }))
   },
   loadTithe(context, { id }) {
