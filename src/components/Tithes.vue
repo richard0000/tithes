@@ -17,11 +17,21 @@
     <section class="hero is-info">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <div class="colums">
+                <div class="columns">
                     <div class="column">
                         <h1 class="title is-size-1" v-if="selectedDate.month.id">
                                 Diezmos de {{ months[(parseInt(selectedDate.month.id) - 1).toString()].name }} - <span v-if="selectedDate.year.id"> {{ selectedDate.year.id }} </span>
                             </h1>
+                    </div>
+                    <div class="column is-one-fifth">
+                      <div class="tile is-ancestor has-text-centered">
+                          <div class="tile is-parent">
+                              <article class="tile is-child">
+                                  <p class="title">{{ totalAmount }}</p>
+                                  <p class="subtitle">Total del mes</p>
+                              </article>
+                          </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -111,7 +121,8 @@ export default {
                         id: null,
                         name: null
                     }
-                }
+                },
+                totalAmount: null
             }
         },
         computed: mapState({
@@ -124,6 +135,7 @@ export default {
                     this.setDates()
                 })
                 .then(() => this.reloadTithes())
+                .then(() => this.setTithesTotalAmount())
         },
         methods: {
             localeDate: function(aDate, aLocale) {
@@ -143,6 +155,14 @@ export default {
             },
             reloadTithes() {
               this.$store.dispatch('loadTithes', { date: this.selectedDate })
+            },
+            setTithesTotalAmount() {
+                  let total = 0
+                  let cantTithes = this.tithes.length
+                  for ( let i = 0; i < cantTithes; i++ ) {
+                      total += parseFloat(this.tithes[i]["amount"])
+                  }
+              this.totalAmount =  total
             }
         }
 }
