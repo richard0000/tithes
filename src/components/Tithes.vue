@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="column">
                                         <p class="title is-size-3">
-                                            {{ '$ ' + tithe.amount }}
+                                            {{ '$ ' + Math.round(tithe.amount) }}
                                         </p>
                                     </div>
                                 </div>

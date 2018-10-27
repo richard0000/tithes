@@ -104,7 +104,7 @@
                                 </span>
                               </p>
                               <p class="control is-expanded">
-                                <input class="input is-size-4 is-rounded" type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount" v-on:keyup.enter="step++">
+                                <input class="input is-size-4 is-rounded" type="number" value="1000" min="0" step="1" data-number-to-fixed="2" data-number-stepfactor="100" placeholder="Monto en pesos" v-model="selectedAmount" v-on:keyup.enter="step++">
                               </p>
                             </div>
                           </div>
@@ -278,7 +278,7 @@ export default {
     },
     submitTithe() {
       if(this.fromIsValid()) {
-        this.$store.dispatch('pushNewTithe', { 
+        this.$store.dispatch('pushNewTithe', {
           user_id: parseInt(this.selectedMember.id),
           amount: parseFloat(this.selectedAmount),
           date: this.selectedDate,
