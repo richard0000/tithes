@@ -28,7 +28,7 @@
                                     {{ localeDate(tithe.date, 'es-AR') }}
                                 </p>
                                 <p class="is-size-3">
-                                    {{ '$ ' + tithe.amount }}
+                                    {{ '$ ' + Math.round(tithe.amount) }}
                                 </p>
                             </div>
                         </div>

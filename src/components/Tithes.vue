@@ -17,11 +17,21 @@
     <section class="hero is-info">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <div class="colums">
+                <div class="columns">
                     <div class="column">
                         <h1 class="title is-size-1" v-if="selectedDate.month.id">
                                 Diezmos de {{ months[(parseInt(selectedDate.month.id) - 1).toString()].name }} - <span v-if="selectedDate.year.id"> {{ selectedDate.year.id }} </span>
                             </h1>
+                    </div>
+                    <div class="column is-one-fifth">
+                      <div class="tile is-ancestor has-text-centered">
+                          <div class="tile is-parent">
+                              <article class="tile is-child">
+                                  <p class="title">{{ totalAmount }}</p>
+                                  <p class="subtitle">Total del mes</p>
+                              </article>
+                          </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -47,6 +57,12 @@
                                 <option v-for="year in years" v-bind:value="year.id">{{ year.name }}</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="column is-one-fifth has-text-centered">
+                      <a class="button is-info is-rounded" @click="downloadTithes()">
+                          <font-awesome-icon icon="download">
+                          </font-awesome-icon>
+                      </a>
                     </div>
                 </div>
             </div>
@@ -78,7 +94,7 @@
                                     </div>
                                     <div class="column">
                                         <p class="title is-size-3">
-                                            {{ '$ ' + tithe.amount }}
+                                            {{ '$ ' + Math.round(tithe.amount) }}
                                         </p>
                                     </div>
                                 </div>
@@ -111,7 +127,8 @@ export default {
                         id: null,
                         name: null
                     }
-                }
+                },
+                totalAmount: null
             }
         },
         computed: mapState({
@@ -124,6 +141,7 @@ export default {
                     this.setDates()
                 })
                 .then(() => this.reloadTithes())
+                .then(() => this.setTithesTotalAmount())
         },
         methods: {
             localeDate: function(aDate, aLocale) {
@@ -143,6 +161,17 @@ export default {
             },
             reloadTithes() {
               this.$store.dispatch('loadTithes', { date: this.selectedDate })
+            },
+            setTithesTotalAmount() {
+                  let total = 0
+                  let cantTithes = this.tithes.length
+                  for ( let i = 0; i < cantTithes; i++ ) {
+                      total += parseFloat(this.tithes[i]["amount"])
+                  }
+              this.totalAmount =  total
+            },
+            downloadTithes() {
+              return this.$store.dispatch('loadPDFTithes', { date: this.selectedDate })
             }
         }
 }
