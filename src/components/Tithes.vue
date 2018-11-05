@@ -58,6 +58,12 @@
                             </select>
                         </div>
                     </div>
+                    <div class="column is-one-fifth has-text-centered">
+                      <a class="button is-info is-rounded" @click="downloadTithes()">
+                          <font-awesome-icon icon="download">
+                          </font-awesome-icon>
+                      </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,6 +169,9 @@ export default {
                       total += parseFloat(this.tithes[i]["amount"])
                   }
               this.totalAmount =  total
+            },
+            downloadTithes() {
+              return this.$store.dispatch('loadPDFTithes', { date: this.selectedDate })
             }
         }
 }
