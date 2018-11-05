@@ -14,6 +14,25 @@ export function fetchTithe (titheId) {
 	return axios.get(`${API_URL}/tithes/${titheId}`)
 }
 
+export function fetchPDFTithes(date) {
+	return axios.get(`${API_URL}/export/tithes?filter[church_id_eq]=1&year=${date.year.id}&month=${date.month.id}`, {
+		responseType: 'blob'
+	})
+	.then(response => {
+			//Create a Blob from the PDF Stream
+	    const file = new Blob(
+	      [response.data],
+	      {type: 'application/pdf'});
+			//Build a URL from the file
+	    const fileURL = URL.createObjectURL(file);
+			//Open the URL on new Window
+	    window.open(fileURL);
+	})
+	.catch(error => {
+	    console.log(error);
+	});
+}
+
 export function createTithe (user_id, amount, date) {
 	return axios.post(`${API_URL}/tithes`, {
 		user_id: user_id,

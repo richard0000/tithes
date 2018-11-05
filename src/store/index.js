@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // imports of AJAX functions go here
-import { fetchTithes, fetchTithe, destroyTithe, fetchMembers, fetchMember, createTithe, createMember, fetchAvailableDates } from '@/api'
+import { fetchTithes, fetchTithe, fetchPDFTithes, destroyTithe, fetchMembers, fetchMember, createTithe, createMember, fetchAvailableDates } from '@/api'
 
 Vue.use(Vuex)
 
@@ -27,6 +27,9 @@ const actions = {
   loadTithe(context, { id }) {
     return fetchTithe(id)
       .then((response) => context.commit('setTithe', { tithe: response.data }))
+  },
+  loadPDFTithes(context, {date}) {
+    return fetchPDFTithes(date)
   },
   deleteTithe(context, { id, router }) {
     return destroyTithe(id)
