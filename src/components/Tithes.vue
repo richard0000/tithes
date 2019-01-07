@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <div class="column is-one-fifth has-text-centered">
-                      <a class="button is-info is-rounded" @click="downloadTithes()">
+                      <a v-bind:class="{'is-loading' : downloading, 'button is-info is-rounded' : true}" @click="downloadTithes()">
                           <font-awesome-icon icon="download">
                           </font-awesome-icon>
                       </a>
@@ -75,30 +75,26 @@
                 <div class="card-content">
                     <div class="columns">
                         <div class="column is-four-fifths">
-                            <router-link :to="`tithes/${tithe.id}`">
-                                <div class="columns">
-                                    <div class="column">
-                                        <figure class="avatar">
-                                            <!-- <img v-bind:src="tithe.member.location"> -->
-                                            <img src="../assets/male.png">
-                                            </img>
-                                        </figure>
-                                    </div>
-                                    <div class="column is-half">
-                                        <p class="title is-size-3">
-                                            {{ tithe.member.name }}
-                                        </p>
-                                        <p class="subtitle">
-                                            {{ localeDate(tithe.date, 'es-AR') }}
-                                        </p>
-                                    </div>
-                                    <div class="column">
-                                        <p class="title is-size-3">
-                                            {{ '$ ' + Math.round(tithe.amount) }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </router-link>
+                            <div class="columns">
+                              <router-link :to="`member/${tithe.member.id}/tithes`" class="column">
+                                    <figure class="avatar">
+                                        <!-- <img v-bind:src="tithe.member.location"> -->
+                                        <img src="../assets/male.png">
+                                        </img>
+                                    </figure>
+                              </router-link>
+                                <router-link :to="`tithes/${tithe.id}`" class="column">
+                                      <p class="title is-size-3">
+                                          {{ tithe.member.name }}
+                                      </p>
+                                      <p class="subtitle">
+                                          {{ localeDate(tithe.date, 'es-AR') }}
+                                      </p>
+                                      <p class="title is-size-3">
+                                          {{ '$ ' + Math.round(tithe.amount) }}
+                                      </p>
+                              </router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,63 +113,66 @@ import {
 from 'vuex'
 export default {
     data() {
-            return {
-                selectedDate: {
-                    year: {
-                        id: null,
-                        name: null
-                    },
-                    month: {
-                        id: null,
-                        name: null
-                    }
+        return {
+            selectedDate: {
+                year: {
+                    id: null,
+                    name: null
                 },
-                totalAmount: null
-            }
-        },
-        computed: mapState({
-            tithes: state => state.tithes,
-            years: state => state.availableDates.years,
-            months: state => state.availableDates.months
-        }),
-        beforeMount() {
-            this.$store.dispatch('loadAvailableDates').then(() => {
-                    this.setDates()
-                })
-                .then(() => this.reloadTithes())
-                .then(() => this.setTithesTotalAmount())
-        },
-        methods: {
-            localeDate: function(aDate, aLocale) {
-                let options = {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                };
-                let theDate = new Date(aDate);
-
-                return theDate.toLocaleDateString(aLocale, options);
+                month: {
+                    id: null,
+                    name: null
+                }
             },
-            setDates() {
-                this.selectedDate.year.id = (new Date()).getFullYear().toString()
-                this.selectedDate.month.id = ((new Date()).getMonth() + 1).toString()
-            },
-            reloadTithes() {
-              this.$store.dispatch('loadTithes', { date: this.selectedDate })
-            },
-            setTithesTotalAmount() {
-                  let total = 0
-                  let cantTithes = this.tithes.length
-                  for ( let i = 0; i < cantTithes; i++ ) {
-                      total += parseFloat(this.tithes[i]["amount"])
-                  }
-              this.totalAmount =  total
-            },
-            downloadTithes() {
-              return this.$store.dispatch('loadPDFTithes', { date: this.selectedDate })
-            }
+            totalAmount: null,
+            downloading: false
         }
+    },
+    computed: mapState({
+        tithes: state => state.tithes,
+        years: state => state.availableDates.years,
+        months: state => state.availableDates.months
+    }),
+    beforeMount() {
+        this.$store.dispatch('loadAvailableDates').then(() => {
+                this.setDates()
+            })
+            .then(() => this.reloadTithes())
+    },
+    methods: {
+        localeDate: function(aDate, aLocale) {
+            let options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            let theDate = new Date(aDate);
+
+            return theDate.toLocaleDateString(aLocale, options);
+        },
+        setDates() {
+            this.selectedDate.year.id = (new Date()).getFullYear().toString()
+            this.selectedDate.month.id = ((new Date()).getMonth() + 1).toString()
+        },
+        reloadTithes() {
+          this.$store.dispatch('loadTithes', { date: this.selectedDate })
+            .then(() => this.setTithesTotalAmount())
+        },
+        setTithesTotalAmount() {
+              let total = 0
+              let cantTithes = this.tithes.length
+              for ( let i = 0; i < cantTithes; i++ ) {
+                  total += parseFloat(this.tithes[i]["amount"])
+              }
+          this.totalAmount =  total
+        },
+        downloadTithes() {
+          this.downloading = true;
+          this.$store.dispatch('loadPDFTithes', { date: this.selectedDate })
+          this.downloading = false;
+        }
+    }
 }
 
 </script>
