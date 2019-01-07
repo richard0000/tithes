@@ -12,14 +12,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VModal from 'vue-js-modal'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import VueApexCharts from 'vue-apexcharts'
 
+Vue.use(VModal)
 Vue.use(Buefy)
+Vue.use(VueApexCharts)
 
 library.add(faCoffee, faEdit, faTrash, faPlus, faMinus, faCalendar, faEraser, faArrowDown, faArrowLeft, faArrowRight, faDownload)
 
-Vue.use(VModal)
-
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('apexchart', VueApexCharts)
 
 Vue.config.productionTip = false
 

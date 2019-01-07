@@ -6,6 +6,10 @@ export function fetchAvailableDates() {
 	return axios.get(`${API_URL}/tithes/dates?filter[church_id_eq]=1`)
 }
 
+export function fetchAvailableDatesForUser(user_id) {
+	return axios.get(`${API_URL}/users/${user_id}/tithes/dates?filter[church_id_eq]=1`)
+}
+
 export function fetchTithes(date) {
 	return axios.get(`${API_URL}/tithes?filter[church_id_eq]=1&year=${date.year.id}&month=${date.month.id}`)
 }
@@ -59,6 +63,10 @@ export function fetchMembers() {
 
 export function fetchMember (memberId) {
 	return axios.get(`${API_URL}/users/${memberId}`)
+}
+
+export function fetchMemberTithes (memberId, date) {
+	return axios.get(`${API_URL}/users/${memberId}/tithes?year=${date.year.id}`)
 }
 
 export function createMember (member) {
