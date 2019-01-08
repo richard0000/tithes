@@ -95,6 +95,7 @@
       this.$store.dispatch('loadAvailableDatesForUser', { id: parseInt(this.$route.params.id) }).then(() => {
               this.setDates()
           })
+          .then(() => this.setDates())
           .then(() => this.reloadTithes());
     },
     reloadTithes() {
@@ -102,8 +103,7 @@
         .then(() => this.computeTithesForGraph());
     },
     setDates() {
-        this.selectedDate.year.id = (new Date()).getFullYear().toString()
-        this.selectedDate.month.id = ((new Date()).getMonth() + 1).toString()
+      this.selectedDate.year.id = this.years[this.years.length - 1].id;
     },
     computeTithesForGraph() {
       function determineMonth(tithe) {
