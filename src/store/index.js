@@ -11,6 +11,16 @@ const state = {
   tithes: [],
   currentTithe: {},
   currentMember: {},
+  selectedDate: {
+      year: {
+          id: null,
+          name: null
+      },
+      month: {
+          id: null,
+          name: null
+      }
+  },
   selectedMember: {},
   selectedMemberTithes: {},
   availableDates: {},
@@ -56,6 +66,9 @@ const actions = {
   prepareSelectedYear(context, { year }) {
     return context.commit('setSelectedYear', { year: year })
   },
+  prepareSelectedMonth(context, { month }) {
+    return context.commit('setSelectedMonth', { month: month })
+  },
   pushNewTithe(context, { user_id, amount, date, router}) {
     return createTithe(user_id, amount, date)
   },
@@ -71,31 +84,37 @@ const actions = {
 const mutations = {
   // isolated data mutations
   setAvailableDates(state, payload) {
-    state.availableDates.months = payload.dates.data.months
-    state.availableDates.years = payload.dates.data.years
+    state.availableDates.months = payload.dates.data.months;
+    state.availableDates.years = payload.dates.data.years;
   },
   setAvailableDatesForUser(state, payload) {
-    state.availableDatesForUser.months = payload.dates.data.months
-    state.availableDatesForUser.years = payload.dates.data.years
+    state.availableDatesForUser.months = payload.dates.data.months;
+    state.availableDatesForUser.years = payload.dates.data.years;
   },
   setTithes(state, payload) {
-    state.tithes = payload.tithes.data
+    state.tithes = payload.tithes.data;
   },
   setTithe(state, payload) {
-    state.currentTithe = payload.tithe.data
+    state.currentTithe = payload.tithe.data;
   },
   setMembers(state, payload) {
-    state.members = payload.members.data
+    state.members = payload.members.data;
   },
   setMember(state, payload) {
-    state.selectedMember = payload.member.data
+    state.selectedMember = payload.member.data;
   },
   setMemberTithes(state, payload) {
-    state.selectedMemberTithes = payload.tithes.data
+    state.selectedMemberTithes = payload.tithes.data;
   },
   unsetSelectedMember() {
-    state.selectedMember = {}
+    state.selectedMember = {};
   },
+  setSelectedYear(state, payload) {
+    state.selectedDate.year.id = payload.year;
+  },
+  setSelectedMonth(state, payload) {
+    state.selectedDate.month.id = payload.month;
+  }
 }
 
 const getters = {
